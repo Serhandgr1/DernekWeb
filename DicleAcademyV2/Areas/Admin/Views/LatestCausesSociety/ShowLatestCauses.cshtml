@@ -41,7 +41,7 @@
                                         <td>@item.Title</td>
                                         <td>@item.Description</td>
                                         <td>@item.Price</td>
-                                        <td><img src="~/society/images/@item.Image" /></td>
+                                        <td><img src="~/society/images/@item.Image" style="max-width:150px;max-height:150px;" /></td>
                                         <td style="text-align: right;">
                                             <div style="display: inline-block;">
                                                 <form method="get" action="/LatestCausesSociety/UpdateShowLatestCauses">
@@ -52,10 +52,10 @@
                                                 </form>
                                             </div>
                                             <div style="display: inline-block;">
-                                                <form method="post" action="/LatestCausesSociety/DeleteLatestCauses">
+                                                <form>
                                                     <input type="hidden" name="Id" value="@item.Id" />
                                                     <button type="submit" class="btn btn-link text-reset fs-16 px-1">
-                                                        <i class="ri-delete-bin-2-line"></i>
+                                                        <i>@Html.ActionLink("Sil", "DeleteLatestCauses",new{id=item.Id}, new { @class="ri-delete-bin-2-line", onclick = "return confirm('Silmek istediğinizden emin misiniz?')"})</i>
                                                     </button>
                                                 </form>
                                             </div> <input value="@ViewBag.Message" id="bag" style="display:none;" />

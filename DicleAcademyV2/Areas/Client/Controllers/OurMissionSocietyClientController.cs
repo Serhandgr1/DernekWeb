@@ -23,14 +23,7 @@ namespace DicleAcademyV2.Areas.Client.Controllers
         public async Task<List<OurMissionDto>> GetAll()
         {
          var data=    _ourMissionService.GetAllOurMission().ToList();
-            //List<OurMissionDto> ourMissionDto = new List<OurMissionDto>()
-            //{
-            //    new OurMissionDto() {Id=2,SkillImage="",SkillDescription= "Our main mission is to save and rescue permanently displaced children." , Image = "animate-img-1.jpg", Description = "Our organization pursues several goals that can be identified as our mission. Learn more about them below." },
-            // new OurMissionDto() {Id=3,SkillImage="",SkillDescription= "Our main mission is to save and rescue permanently displaced children." , Image = "animate-img-1.jpg", Description = "Our organization pursues several goals that can be identified as our mission. Learn more about them below." },
-            //  new OurMissionDto() {Id=4,SkillImage="",SkillDescription= "Our main mission is to save and rescue permanently displaced children." , Image = "animate-img-1.jpg", Description = "Our organization pursues several goals that can be identified as our mission. Learn more about them below." },
-            // new OurMissionDto() {Id=5,SkillImage="",SkillDescription= "Our main mission is to save and rescue permanently displaced children." , Image = "animate-img-1.jpg", Description = "Our organization pursues several goals that can be identified as our mission. Learn more about them below." }
-
-            //};
+        
             return data;
         }
         public async Task<OurMissionDto> GetById(int id)

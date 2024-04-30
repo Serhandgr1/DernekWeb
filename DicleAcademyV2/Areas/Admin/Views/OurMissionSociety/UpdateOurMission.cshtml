@@ -42,7 +42,8 @@
                             <tr>
                                 <td>SkillImage</td>
                                 <td class="table-user">
-                                    <img src="~/society/images/@Model.SkillImage" alt="table-user"
+                                    <input asp-for="SkillImage" style="display:none;" />
+                                    <img  name="SkillImage" src="~/society/images/@Model.SkillImage" alt="table-user"
                                          class="me-2 rounded-circle" />
                                 </td>
                             </tr>
@@ -51,8 +52,9 @@
                                 <td> <input type="file" name="skillFile" class="form-control-file"> </td>
                             </tr>
                             <tr>
-                                <td>Image</td>
+                                <td >Image</td>
                                 <td class="table-user">
+                                    <input  asp-for="Image" style="display:none;" />
                                     <img src="~/society/images/@Model.Image" alt="table-user"
                                          class="me-2 rounded-circle" />
                                 </td>

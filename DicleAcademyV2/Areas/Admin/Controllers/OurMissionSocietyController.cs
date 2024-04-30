@@ -1,4 +1,5 @@
-﻿using Entities.ModelsDto;
+﻿using AutoMapper;
+using Entities.ModelsDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DicleAcademyV2.Areas.Admin.Controllers
@@ -8,6 +9,12 @@ namespace DicleAcademyV2.Areas.Admin.Controllers
     {
         GenericRequests<OurMissionDto> genericRequests = new GenericRequests<OurMissionDto>();
         FileManagerAsycn FileManager = new FileManagerAsycn();
+        private readonly IMapper _mapper;
+        public OurMissionSocietyController(IMapper mapper)
+        { 
+            _mapper = mapper;
+            
+        }
         public IActionResult ShowOurMissionIndex(string? update)
         {
             if (GenerateClient.Client.DefaultRequestHeaders.Contains("Authorization"))
@@ -61,30 +68,33 @@ namespace DicleAcademyV2.Areas.Admin.Controllers
         {
             if (GenerateClient.Client.DefaultRequestHeaders.Contains("Authorization"))
             {
-                var data = await genericRequests.GetByIdGeneric("OurMissionSocietyClient/GetById", ourMission.Id);
-
-            if (!string.IsNullOrEmpty(data.Image)) {
-                var name = await FileManager.UpdateFileAsycn(data.Image, ourMission.formFile);
-                ourMission.Image=name;
-                ourMission.formFile = null;
-            }else if(ourMission.formFile is not null)
+               // var data = await genericRequests.GetByIdGeneric("OurMissionSocietyClient/GetById", ourMission.Id);
+                var dto = _mapper.Map<OurMissionDto>(ourMission);
+                if (string.IsNullOrEmpty(ourMission.Image)&& ourMission.formFile is not null) {
+                    string name = await FileManager.PostFileAsycn(ourMission.formFile);
+                    dto.Image = name;
+                    dto.formFile = null;
+                }
+                else if(!string.IsNullOrEmpty(ourMission.Image) && ourMission.formFile is not null)
             {
-               string name = await FileManager.PostFileAsycn(ourMission.formFile);
-                ourMission.Image = name;
-                ourMission.formFile = null;
+                    var name = await FileManager.UpdateFileAsycn(ourMission.Image, ourMission.formFile);
+                    dto.Image = name;
+                    dto.formFile = null;
+                   
             }
-            if (!string.IsNullOrEmpty(data.SkillImage)) {
-                var name = await FileManager.UpdateFileAsycn(data.SkillImage, ourMission.skillFile);
-                ourMission.SkillImage = name;
-                ourMission.skillFile = null;
-            }
-            else if(ourMission.skillFile is not null)
+            if (string.IsNullOrEmpty(ourMission.SkillImage)&& ourMission.skillFile is not null) {
+                    string name = await FileManager.PostFileAsycn(ourMission.skillFile);
+                    dto.SkillImage = name;
+                    dto.skillFile = null;
+                }
+            else if(!string.IsNullOrEmpty(ourMission.SkillImage)&&ourMission.skillFile is not null)
             {
-                string name = await FileManager.PostFileAsycn(ourMission.skillFile);
-                ourMission.SkillImage = name;
-                ourMission.skillFile = null;
+                    var name = await FileManager.UpdateFileAsycn(ourMission.SkillImage, ourMission.skillFile);
+                    dto.SkillImage = name;
+                    dto.skillFile = null;
             }
-           await genericRequests.UpdateRequestGeneric("OurMissionSocietyClient/Update", ourMission);
+            
+               await genericRequests.UpdateRequestGeneric("OurMissionSocietyClient/Update", dto);
             return RedirectToAction("ShowOurMission", "OurMissionSociety", new { update = "Başarılı" });
             }
             else { return RedirectToAction("ShowIndex", "Admin"); }

@@ -51,10 +51,10 @@
                                                 </form>
                                             </div>
                                             <div style="display: inline-block;">
-                                                <form method="post" action="/ContactAdminSociety/DeleteContactAdmin">
+                                                <form>
                                                     <input type="hidden" name="Id" value="@item.Id" />
                                                     <button type="submit" class="btn btn-link text-reset fs-16 px-1">
-                                                        <i class="ri-delete-bin-2-line"></i>
+                                                        <i>@Html.ActionLink("Sil", "DeleteContactAdmin",new{id=item.Id}, new { @class="ri-delete-bin-2-line", onclick = "return confirm('Silmek istediğinizden emin misiniz?')"})</i>
                                                     </button>
                                                 </form>
                                             </div> <input value="@ViewBag.Message" id="bag" style="display:none;" />

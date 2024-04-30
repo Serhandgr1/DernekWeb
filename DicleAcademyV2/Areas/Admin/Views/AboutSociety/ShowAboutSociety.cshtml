@@ -41,7 +41,7 @@
                                         <td>@item.Description</td>
                                         <td class="table-user">
                                             <img src="~/society/images/@item.Image" alt="table-user"
-                                                 class="me-2 rounded-circle" />
+                                                 class="me-2 rounded-circle" style="max-width:150px;max-height:150px;" />
                                         </td>
                                         <td style="text-align: right;">
                                             <div style="display: inline-block;">
@@ -53,9 +53,11 @@
                                                 </form>
                                             </div>
                                             <div style="display: inline-block;">
-                                                <form method="post" action="/AboutSociety/DeleteAboute">
+                                                <form>
                                                     <input type="hidden" name="Id" value="@item.Id" />
-                                                    <button class="btn btn-outline-danger" id="btn1">@Html.ActionLink("Sil", "DeleteAboute",new{id=item.Id}, new { @class="btn btn-warning", onclick = "return confirm('Silmek istediğinizden emin misiniz?')"})</button>
+                                                    <button type="submit" class="btn btn-link text-reset fs-16 px-1">
+                                                        <i>@Html.ActionLink("Sil", "DeleteAboute",new{id=item.Id}, new { @class="ri-delete-bin-2-line", onclick = "return confirm('Silmek istediğinizden emin misiniz?')"})</i>
+                                                    </button> 
                                                 </form>
                                             </div> <input value="@ViewBag.Message" id="bag" style="display:none;" />
                                         </td>
