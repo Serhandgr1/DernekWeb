@@ -1,0 +1,85 @@
+﻿@model Tuple<List<AbouteDto>,List<OurMissionDto>,List<OurTeamDto>>
+
+<section class="parallax-container" data-parallax-img="/society/images/bg-breadcrumbs-about.jpg">
+    <div class="parallax-content breadcrumbs-custom context-dark">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-9">
+                    <h2 class="breadcrumbs-custom-title">About Us</h2>
+                    <ul class="breadcrumbs-custom-path">
+                        <li><a href="@Url.Action("Index","HomeIndex")">Home</a></li>
+                        <li class="active">About Us</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section section-lg bg-gray-1">
+    <div class="container">
+        <h3 class="text-center">About Helper</h3>
+        @foreach(var item in Model.Item1)
+        {
+            <div class="row row-50">
+                <div class="col-lg-6 pr-xl-5">
+                    <img src="~/society/images/@item.Image" alt="" width="518" height="430" />
+                </div>
+                <div class="col-lg-6">
+                    
+                    <div class="text-with-divider">
+                        <div class="divider"></div>
+                        <h4 class="text-opacity-70">@item.Title </h4>
+                    </div>
+                    <p>@item.Description </p>
+                  </div>
+            </div>
+        }
+     
+    </div>
+</section>
+<section class="section section-lg bg-default">
+    <div class="container">
+        <h3 class="text-center">Our Mission</h3>
+        <div class="row row-30 row-md-40 row-xl-60">
+            @foreach(var item2 in Model.Item2)
+            {
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="box-icon-modern">
+                        <div class="box-icon-inner decorate-triangle"><span class="icon-xl linearicons-earth icon-primary"></span></div>
+                        <div class="box-icon-caption">
+                            <h4><a href="#">@item2.SkillTitle</a></h4>
+                            <p>@item2.SkillDescription </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<section class="section section-lg bg-gray-1">
+    <div class="container">
+        <h3 class="text-center">Our Team</h3>
+        <div class="row no-gutters">
+            @foreach (var item3 in Model.Item3)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="team-classic">
+                        <div class="team-classic-figure">
+                            <img src="~/society/images/@item3.Image" alt="" width="390" height="252" />
+                            <ul class="team-classic-soc-list">
+                                <li><a class="icon icon-md fa-facebook" href="#"></a></li>
+                                <li><a class="icon icon-md fa-instagram" href="#"></a></li>
+                                <li><a class="icon icon-md fa-twitter" href="#"></a></li>
+                            </ul>
+                        </div>
+                        <div class="team-classic-caption">
+                            <h4><a class="team-name" href="#">@item3.Title</a></h4>
+                            <p>@item3.Description</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

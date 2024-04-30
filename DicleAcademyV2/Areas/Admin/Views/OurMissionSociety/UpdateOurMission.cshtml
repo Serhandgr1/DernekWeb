@@ -1,0 +1,106 @@
+﻿@model OurMissionDto
+
+<!-- Begin page -->
+<!-- Start Content-->
+<div class="container-fluid">
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Our Mission</a></li>
+                        <li class="breadcrumb-item active">Our Mission Güncelle</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Our Mission Güncelle</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="header-title">Our Mission</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive-sm">
+                        <table class="table table-striped table-centered mb-0">
+                            <form method="post" action="/OurMissionSociety/UpdateOurMission" enctype="multipart/form-data">
+                            <tr>
+                                <td>SkillTitle</td>
+                                <td><input name="SkillTitle" value="@Model.SkillTitle"></td>
+                            </tr>
+                            <tr>
+                                <td>SkillDescription</td>
+                                <td><input name="SkillDescription" value="@Model.SkillDescription"></td>
+                            </tr>
+                            <tr>
+                                <td>SkillImage</td>
+                                <td class="table-user">
+                                    <img src="~/society/images/@Model.SkillImage" alt="table-user"
+                                         class="me-2 rounded-circle" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Update SkillImage</td>
+                                <td> <input type="file" name="skillFile" class="form-control-file"> </td>
+                            </tr>
+                            <tr>
+                                <td>Image</td>
+                                <td class="table-user">
+                                    <img src="~/society/images/@Model.Image" alt="table-user"
+                                         class="me-2 rounded-circle" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Update Image</td>
+                                <td>
+                                    <input type="file" name="formFile" class="form-control-file">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Description</td>
+                                <td>
+                                    <input name="Description" value="@Model.Description">
+                                </td>
+                            </tr>
+                            <tr>
+                            <td></td>
+                            <td></td>
+                                <td style="text-align: right;">
+                                    <input type="hidden" name="Id" value="@Model.Id" />
+                                    <button type="submit" class="btn btn-link text-reset fs-16 px-1">Onayla</button>
+                                </td>
+                            </tr>
+                            </form>
+                        </table>
+                    </div> <!-- end table-responsive-->
+                </div>
+            </div> <!-- end card -->
+        </div><!-- end col-->
+    </div>
+    <!-- end row-->
+</div> <!-- container -->
+<!-- end Footer -->
+
+
+<script>
+    var data = document.getElementById("bag").value;
+    console.log("DATA " + data);
+    if (data == "Başarılı") {
+        swal("İşleminiz başarı ile gerçekleşti", {
+            icon: "success",
+            button: "Tamam!",
+        });
+    } else if (data == "Başarısız") {
+        swal("Hata oluştu daha sonra tekrar deneyin!", {
+            icon: "error",
+            button: "Tamam!",
+        });
+    }
+</script>
