@@ -11,9 +11,11 @@ namespace DicleAcademyV2.Areas.Client.Controllers
     public class OurMissionSocietyClientController : Controller
     {
         private readonly IOurMissionService _ourMissionService;
-        public OurMissionSocietyClientController(IOurMissionService ourMissionService)
+        private readonly ILogger<OurMissionSocietyClientController> _logger;
+        public OurMissionSocietyClientController(IOurMissionService ourMissionService, ILogger<OurMissionSocietyClientController> logger)
         {
             _ourMissionService = ourMissionService;
+            _logger = logger;
         }
         public async Task<IActionResult> Add([FromBody]OurMissionDto ourMission)
         {
@@ -29,24 +31,32 @@ namespace DicleAcademyV2.Areas.Client.Controllers
         public async Task<OurMissionDto> GetById(int id)
         {
           var data =  _ourMissionService.GetByIdOurMission(id);
-            //OurMissionDto ourMissionDto = new OurMissionDto();
-            //ourMissionDto.Id = id;
-            //ourMissionDto.SkillTitle = "asd";
-            //ourMissionDto.SkillImage = "asd";
-            //ourMissionDto.SkillDescription = "qweqwe";
-            //ourMissionDto.Description = "qweqwe";
-            //ourMissionDto.Image = "qweqwe";
             return data;
         }
         public async Task<IActionResult> Update([FromBody] OurMissionDto ourMission)
         {
-            _ourMissionService.UpdateOurMission(ourMission);
-            return Ok();
+            try {
+                _ourMissionService.UpdateOurMission(ourMission);
+                return Ok();
+            }  catch (Exception ex) {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+
+            
         }
         public async Task<IActionResult> Delete(int id)
         {
-            _ourMissionService.DeleteOurMission(id);
+            try
+            {
+                _ourMissionService.DeleteOurMission(id);
             return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

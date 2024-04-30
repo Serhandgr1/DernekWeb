@@ -10,9 +10,12 @@ namespace DicleAcademyV2.Areas.Client.Controllers
     public class FooterSocietyClientController : Controller
     {
         private readonly ISocialMediaService _socialMediaService;
-        public FooterSocietyClientController(ISocialMediaService socialMediaService)
+        private readonly ILogger<FooterSocietyClientController> _logger;
+        public FooterSocietyClientController(ISocialMediaService socialMediaService, ILogger<FooterSocietyClientController> logger)
         {
             _socialMediaService = socialMediaService;
+            _logger = logger;
+
         }
         public IActionResult Add([FromBody] SocialMediaDto socialMediaDto)
         {
@@ -22,27 +25,35 @@ namespace DicleAcademyV2.Areas.Client.Controllers
         public List<SocialMediaDto> GetAll()
         {
           var data =  _socialMediaService.GetAllSocialMedia().ToList();
-            //List<SocialMediaDto> socialMedia = new List<SocialMediaDto>() {
-            //    new SocialMediaDto() { Id = 1, Facebook ="asdasd", Twitter="asdasd", Youtube="asdasd", İnstagram="asdasd"}
-            //     };
             return data;
         }
         public SocialMediaDto GetById(int id)
         {
          var data=   _socialMediaService.GetByIdSocialMedia(id);
-            //SocialMediaDto socialMediaDto = new SocialMediaDto() { Id = 1, Facebook = "asdasd", Twitter = "asdasd", Youtube = "asdasd", İnstagram = "asdasd" };
-
             return data;
         }
         public IActionResult Update([FromBody] SocialMediaDto socialMediaDto)
-        {
-            _socialMediaService.UpdateSocialMedia(socialMediaDto);
-            return Ok();
+        { try {
+                _socialMediaService.UpdateSocialMedia(socialMediaDto);
+                return Ok();
+            } catch (Exception ex) {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+            
         }
         public IActionResult Delete(int id)
-        { 
-            _socialMediaService.DeleteSocialMedia(id);
+        {
+            try
+            {
+                _socialMediaService.DeleteSocialMedia(id);
             return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

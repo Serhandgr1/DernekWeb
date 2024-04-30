@@ -9,36 +9,50 @@ namespace DicleAcademyV2.Areas.Client.Controllers
     public class AboutSocietyClientController : Controller
     {
         private readonly INewAbouteService _aboute;
-        public AboutSocietyClientController(INewAbouteService aboute)
+        private readonly ILogger<AboutSocietyClientController> _logger;
+        public AboutSocietyClientController(INewAbouteService aboute, ILogger<AboutSocietyClientController> logger)
         {
             _aboute = aboute;
+            _logger = logger;
+
         }
         public IActionResult Add([FromBody] AbouteDto abouteDto)
         {
             _aboute.CreateAboutUs(abouteDto);
             return Ok();
         }
-        [Authorize(Roles = "Admin")]
         public List<AbouteDto> GetAll()
         {
             var data = _aboute.GetAllAboutUs().ToList();
             return data;
         }
-        [Authorize(Roles = "Admin")]
         public AbouteDto GetById(int id)
         {
             var data=   _aboute.GetByIdAboutUs(id);
             return data;
         }
         public IActionResult Update([FromBody] AbouteDto abouteDto)
-        {
-           _aboute.UpdateAboutUs(abouteDto);
-            return Ok();
+        { try {
+                _aboute.UpdateAboutUs(abouteDto);
+                return Ok();
+            } catch (Exception ex) {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+           
         }
         public IActionResult Delete(int id)
-        {  
-            _aboute.DeleteAboutUs(id);
+        {
+            try
+            {
+                _aboute.DeleteAboutUs(id);
             return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

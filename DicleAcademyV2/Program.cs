@@ -3,6 +3,7 @@ using DicleAcademyV2.Extencion;
 using DicleAcademyV2.Localization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Repositories.AutoMapper;
 using System.Globalization;
@@ -11,6 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddLogging(log =>
+{
+    log.ClearProviders();
+    log.AddFile($"{Directory.GetCurrentDirectory()}\\LogFile\\log.txt", LogLevel.Error);
+});
 builder.Services
     .AddRazorPages()
     .AddViewLocalization();

@@ -11,9 +11,11 @@ namespace DicleAcademyV2.Areas.Client.Controllers
     public class SocialMediaSocietyClientController : Controller
     {
         private readonly ISocialMediaService _socialMediaService;
-        public SocialMediaSocietyClientController(ISocialMediaService socialMediaService)
+        private readonly ILogger<SocialMediaSocietyClientController> _logger;
+        public SocialMediaSocietyClientController(ISocialMediaService socialMediaService, ILogger<SocialMediaSocietyClientController> logger)
         {
             _socialMediaService = socialMediaService;
+            _logger = logger;
         }
         public  async Task<IActionResult> Add([FromBody] SocialMediaDto socialMedia)
         {
@@ -23,27 +25,36 @@ namespace DicleAcademyV2.Areas.Client.Controllers
         public async Task<List<SocialMediaDto>> GetAll()
         {
          var data=   _socialMediaService.GetAllSocialMedia().ToList();
-            //List<SocialMediaDto> socialMediaDto = new List<SocialMediaDto>()
-            //{
-            //    new SocialMediaDto { Id = 1, Facebook="facebook.com", Twitter="x.com", Youtube="youtube.com", İnstagram="instagram.com"}
-            //};
             return data;
         }
         public async Task<SocialMediaDto> GetById(int id)
         {
          var data=   _socialMediaService.GetByIdSocialMedia(id);
-            //SocialMediaDto data = new SocialMediaDto { Id = 1, Facebook = "facebook.com", Twitter = "x.com", Youtube = "youtube.com", İnstagram = "instagram.com" };
-            return data;
+           return data;
         }
         public async Task<IActionResult> Update([FromBody] SocialMediaDto socialMedia)
         {
-            _socialMediaService.UpdateSocialMedia(socialMedia);
-            return Ok();
+            try {
+                _socialMediaService.UpdateSocialMedia(socialMedia);
+                return Ok();
+            } catch (Exception ex){
+                _logger.LogError(ex.Message);
+            return BadRequest(ex.Message);
+            }
+            
         }
         public async Task<IActionResult> Delete(int id)
         {
-            _socialMediaService.DeleteSocialMedia(id);
+            try
+            {
+                _socialMediaService.DeleteSocialMedia(id);
             return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

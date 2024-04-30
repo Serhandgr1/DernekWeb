@@ -7,9 +7,11 @@ namespace Society.Areas.Client.Controllers
     public class LogoClientController : Controller
     {
         private readonly ILogoService _logoService;
-        public LogoClientController(ILogoService logoService)
+        private readonly ILogger<LogoClientController> _logger;
+        public LogoClientController(ILogoService logoService, ILogger<LogoClientController> logger)
         {
-            _logoService = logoService; 
+            _logoService = logoService;
+            _logger = logger;
         }
         public async Task<IActionResult> GetAllLogo()
         {
@@ -19,8 +21,15 @@ namespace Society.Areas.Client.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateLogo([FromBody] LogoDto logoDto) 
         {
-            await _logoService.UpdateLogo(logoDto);
-            return Ok();
+            try {
+                await _logoService.UpdateLogo(logoDto);
+                return Ok();
+            } catch (Exception ex){
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+
+            
         }
 
     }

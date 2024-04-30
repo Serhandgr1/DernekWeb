@@ -11,10 +11,12 @@ namespace DicleAcademyV2.Areas.Client.Controllers
     public class LatestCausesSocietyClientController : Controller
     {
         private readonly ILatestCausesService _latestCausesService;
+        private readonly ILogger<LatestCausesSocietyClientController> _logger;
 
-        public LatestCausesSocietyClientController(ILatestCausesService latestCausesService)
+        public LatestCausesSocietyClientController(ILatestCausesService latestCausesService, ILogger<LatestCausesSocietyClientController> logger)
         {
             _latestCausesService = latestCausesService;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Add([FromBody]LatestCausesDto latestCauses)
@@ -25,25 +27,35 @@ namespace DicleAcademyV2.Areas.Client.Controllers
         public async Task<List<LatestCausesDto>> GetAll()
         {
          var data=   _latestCausesService.GetAllLatestCauses().ToList();
-            //List<LatestCausesDto> latestCausesDto = new List<LatestCausesDto>() { new LatestCausesDto() { Id = 3, Price = 92, Title = "Recycling for Charity", Description = "At Helper, there are various charity causes and projects, in which you can always take part. Feel free to learn about them below or browse our website for more information.", Image = "causes-02-372x396.jpg" } };
-
             return data;
         }
         public async Task<LatestCausesDto> GetById(int id)
         {   var data = _latestCausesService.GetByIdLatestCauses(id);
-            //LatestCausesDto latestCausesDto = new LatestCausesDto() { Id = 3, Price = 92, Title = "Recycling for Charity", Description = "At Helper, there are various charity causes and projects, in which you can always take part. Feel free to learn about them below or browse our website for more information.", Image = "causes-02-372x396.jpg" };
-
             return data;
         }
         public async Task<IActionResult> Update([FromBody] LatestCausesDto latestCauses)
         {
-            _latestCausesService.UpdateLatestCauses(latestCauses);
-            return Ok();
+            try
+            {
+                _latestCausesService.UpdateLatestCauses(latestCauses);
+                return Ok();
+            } catch (Exception ex) { 
+                _logger.LogError(ex.Message); 
+                return BadRequest(ex.Message); 
+            }
         }
         public async Task<IActionResult> Delete(int id)
         {
-            _latestCausesService.DeleteLatestCauses(id);
+            try
+            {
+                _latestCausesService.DeleteLatestCauses(id);
             return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

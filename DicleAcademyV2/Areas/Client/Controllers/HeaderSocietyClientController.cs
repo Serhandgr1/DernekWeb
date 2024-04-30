@@ -11,9 +11,12 @@ namespace DicleAcademyV2.Areas.Client.Controllers
     {
 
         private readonly ISocietyHeaderService _societyHeaderService;
-        public HeaderSocietyClientController(ISocietyHeaderService societyHeaderService)
+        private readonly ILogger<HeaderSocietyClientController> _logger;
+        public HeaderSocietyClientController(ISocietyHeaderService societyHeaderService, ILogger<HeaderSocietyClientController> logger)
         {
             _societyHeaderService = societyHeaderService;
+            _logger = logger;
+
         }
         public IActionResult Add([FromBody]SocietyHeaderDto societyHeader)
         {
@@ -23,28 +26,36 @@ namespace DicleAcademyV2.Areas.Client.Controllers
         public async Task<List<SocietyHeaderDto>> GetAll()
         {
         var data= _societyHeaderService.GetAllSocietyHeader().ToList();
-        //    List<SocietyHeaderDto> societyHeaderDto = new List<SocietyHeaderDto>()
-        //    {
-        //    new SocietyHeaderDto(){Title ="Help The Children",Id=1,Description="We do whatever it takes to make sure children don’t just survive but thrive. Helper believes that every child should be able to make their mark on their world and help build a better future.",Image="~/society/images/bg-bunner-2.jpg"}
-        //};
             return data;
         }
         public async Task<SocietyHeaderDto> GetById(int id)
         {
           var data =  _societyHeaderService.GetByIdSocietyHeader(id);
-            //SocietyHeaderDto societyHeaderDto = new SocietyHeaderDto() { Title = "Help The Children", Id = 1, Description = "We do whatever it takes to make sure children don’t just survive but thrive. Helper believes that every child should be able to make their mark on their world and help build a better future.", Image = "~/society/images/bg-bunner-2.jpg" };
-
             return data;
         }
         public async Task<IActionResult> Update([FromBody] SocietyHeaderDto societyHeader)
         {
-            _societyHeaderService.UpdateSocietyHeader(societyHeader);
-            return Ok();
+            try {
+                _societyHeaderService.UpdateSocietyHeader(societyHeader);
+                return Ok();
+            }  catch (Exception ex) {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+            
         }
         public async Task<IActionResult> Delete(int id)
         {
-            _societyHeaderService.DeleteSocietyHeader(id);
+            try
+            {
+                _societyHeaderService.DeleteSocietyHeader(id);
             return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

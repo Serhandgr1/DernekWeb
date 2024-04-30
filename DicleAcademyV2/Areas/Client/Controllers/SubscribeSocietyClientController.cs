@@ -10,24 +10,28 @@ namespace DicleAcademyV2.Areas.Client.Controllers
     public class SubscribeSocietyClientController : Controller
     {
         private readonly ISubscribeService _subscribeService;
-        public SubscribeSocietyClientController(ISubscribeService subscribeService)
+        private readonly ILogger<SubscribeSocietyClientController> _logger;
+        public SubscribeSocietyClientController(ISubscribeService subscribeService, ILogger<SubscribeSocietyClientController> logger)
         {
             _subscribeService = subscribeService;
+            _logger = logger;
         }
         public async Task<List<SubscribeDto>> GetAll()
         {
           var data =  _subscribeService.GetAllSubscribe().ToList();
-
-
-            //List<SubscribeDto> subscriptions = new List<SubscribeDto>() {
-            //new SubscribeDto () { Id = 1, ClientMail="dogruserhanayberk@gmail.com"}
-            //};
             return data;
         }
         public  async Task<IActionResult> Delete(int id)
         {
-            _subscribeService.DeleteSubscribe(id);
-            return Ok();
+            try {
+                _subscribeService.DeleteSubscribe(id);
+                return Ok();
+            } catch(Exception ex) {
+                _logger.LogError(ex.Message);
+            return BadRequest(ex.Message);
+            }
+
+           
         }
     }
 }

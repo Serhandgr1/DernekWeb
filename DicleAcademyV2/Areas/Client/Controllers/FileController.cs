@@ -10,9 +10,11 @@ namespace DicleAcademyV2.Areas.Client.Controllers
         UploadFiles uploadFiles = new UploadFiles();
         DeleteFiles deleteFiles = new DeleteFiles();
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public FileController(IWebHostEnvironment webHostEnvironment)
+        private readonly ILogger<FileController> _logger;
+        public FileController(IWebHostEnvironment webHostEnvironment, ILogger<FileController> logger)
         {
             _webHostEnvironment = webHostEnvironment;
+            _logger = logger;
         }
         public async Task<string> FileUpload(IFormFile images)
         {
@@ -28,6 +30,7 @@ namespace DicleAcademyV2.Areas.Client.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return "null";
             }
 
@@ -46,6 +49,7 @@ namespace DicleAcademyV2.Areas.Client.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
 
@@ -66,6 +70,7 @@ namespace DicleAcademyV2.Areas.Client.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return "null";
             }
 
